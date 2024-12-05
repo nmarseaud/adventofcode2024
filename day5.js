@@ -35,19 +35,28 @@ checkRulesPart2 = (update = [], rules) => {
         for (let j = 0; j < rulesOfPage.length; j++) {
             const rule = rulesOfPage[j];
             if (update.includes(rule[1])) {
-                if (i < update.indexOf(rule[1])) {
+                if (update.indexOf(page) < update.indexOf(rule[1])) {
                     continue;
                 } else {
-                    fs.appendFileSync(logFilePath, (`The update ${update} was wrong because ${rule[0]} is after ${rule[1]} transgressing rule ${rule[0]}|${rule[1]}\n`));
-                    // Solution found in this article : https://www.geeksforgeeks.org/how-to-move-an-array-element-from-one-array-position-to-another-in-javascript/
-                    // [array[indexFrom], array[indexTo]] = [array[indexTo], array[indexFrom]]; 
-                    fs.appendFileSync(logFilePath, (`update before ${update}\n`));
-                    let newIndex = update.indexOf(page) - 1;
-                    if  (newIndex < 0) {
-                        newIndex = 0;
+                    function shift_By_One_To_The_Left_Until_Its_Good() {
+                        fs.appendFileSync(logFilePath, (`The update ${update} was wrong because ${rule[0]}/${page} is after ${rule[1]} transgressing rule ${rule[0]}|${rule[1]}\n`));
+                        // Solution found in this article : https://www.geeksforgeeks.org/how-to-move-an-array-element-from-one-array-position-to-another-in-javascript/
+                        // [array[indexFrom], array[indexTo]] = [array[indexTo], array[indexFrom]]; 
+                        fs.appendFileSync(logFilePath, (`update before ${update}\n`));
+                        let newIndex = update.indexOf(page) - 1;
+                        if  (newIndex < 0) {
+                            newIndex = 0;
+                        }
+                        [update[update.indexOf(page)], update[newIndex]] = [update[newIndex], update[update.indexOf(page)]];
+                        fs.appendFileSync(logFilePath, (`update after ${update}\n`));
+                        if (!(update.indexOf(page) < update.indexOf(rule[1]))) {
+                            shift_By_One_To_The_Left_Until_Its_Good();
+                        } else {
+                            fs.appendFileSync(logFilePath, (`The update ${update} is now valid\n`));
+                            return;
+                        }
                     }
-                    [update[update.indexOf(page)], update[newIndex]] = [update[newIndex], update[update.indexOf(page)]];
-                    fs.appendFileSync(logFilePath, (`update after ${update}\n`));
+                    shift_By_One_To_The_Left_Until_Its_Good();
                 }
             }
         }
