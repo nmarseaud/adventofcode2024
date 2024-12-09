@@ -132,3 +132,6 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 
     part2();
 });
+
+// Part 1: 6211348208140 ✅
+// Part 2: 6239783302560 ✅ YEAH FOR LOOPS BABY!
