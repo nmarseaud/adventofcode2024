@@ -98,7 +98,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
                     }
                 }
 
-                // If the index of the group of points is greater than the index of the group of numbers, break
+                // If the index of the group of points is greater than the index of the group of numbers, continue to the next group of numbers
                 if (groupPointStart > lastGroupStart) {
                     // console.log("Group Point Start is greater than Last Group Start");
                     i = i - (groupNumber.length - 1);
@@ -116,8 +116,10 @@ fs.readFile(filePath, 'utf8', (err, data) => {
                 // console.log("Group Point: ", groupPoint, "Found at: ", groupPointStart, "for Group Number: ", groupNumber, "Found at: ", lastGroupStart);
                 for (let l = 0; l < groupNumber.length; l++) {
                     [decoded[groupPointStart + l], decoded[lastGroupStart - l]] = [decoded[lastGroupStart - l], decoded[groupPointStart + l]];
+                    // [array[indexFrom], array[indexTo]] = [array[indexTo], array[indexFrom]]; 
+                    // lastGroupStart - l beecause it's a reverse loop
                 }
-                i = i - (groupNumber.length - 1);
+                i = i - (groupNumber.length - 1); // On to the next group of numbers
                 
             }
         }
